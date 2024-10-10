@@ -2,7 +2,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Main
+public class NumbQuess
 {
 	public static void main(String[] args)
 	{
