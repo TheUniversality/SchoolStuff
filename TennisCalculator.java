@@ -81,7 +81,7 @@ public class TennisCalculator {
 				System.out.println("Wrong option entered, you must enter \"A\" for player A or \"D\" for player B");
 			}
 
-			if(V_Int_PlrA[1] > 5 || V_Int_PlrA[1] > 5)
+			if(V_Int_PlrA[1] > 5 || V_Int_PlrB[1] > 5)
 			{
 				if(V_Int_PlrA[1] > V_Int_PlrB[1]+1)
 				{
