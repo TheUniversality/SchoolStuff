@@ -1,0 +1,52 @@
+﻿<Window x:Class="Tennis.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tennis"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="720" Width="1280">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="131*"/>
+			<RowDefinition Height="269*"/>
+			<RowDefinition Height="241*"/>
+			<RowDefinition Height="63*"/>
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+
+		<Button x:Name="Btn_NewGame" Content="Start new game" Height="50" Width="192" Click="F_StartNewGame_RNil" Cursor="Cross" FontSize="20"/>
+
+		<Grid Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+
+			<TextBox x:Name="TBox_TeamA" TextWrapping="Wrap" Text="TEAM 1" Height="25" Width="239" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16"/>
+			<TextBox x:Name="TBox_TeamB" Grid.Column="1" TextWrapping="Wrap" Text="TEAM 2" Height="25" Width="250" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16"/>
+
+			<Button x:Name="Btn_TeamAScore" Content="TEAM 1 Score" Grid.Row="1" Height="30" Width="143" Cursor="Cross" FontSize="16" Click="F_TeamAScore_RNil"/>
+			<Button x:Name="Btn_TeamBScore" Grid.Column="1" Content="TEAM 2 Score" Grid.Row="1" Height="30" Width="150" Cursor="Cross" FontSize="16" Click="F_TeamBScore_RNil"/>
+
+		</Grid>
+
+		<CheckBox x:Name="ChBox_CountMatches" Content="Count Maches" Grid.Row="2" Height="50" Width="245" IsChecked="True" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
+
+		<Label x:Name="TLabel_MatchCount" Grid.Column="1" Content="Match count: " HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
+		<Label x:Name="TLabel_Score" Grid.Column="1" Content="TEAM 1 | TEAM 2" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"/>
+		<Label x:Name="TLabel_Outcome" Grid.Column="1" Content="Output" Grid.Row="2" Height="100" Width="350" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
+
+		<Label Content="© Matěj Zahradník [The Universality] zahra.matej@gmail.com - 2024" Grid.Row="3" Grid.ColumnSpan="2" FontSize="16" Cursor="Help" AutomationProperties.HelpText="Author of this program" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+
+	</Grid>
+</Window>
