@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tennis"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280">
-	<Grid>
+        Title="MainWindow" Height="720" Width="1280" Icon="/IVN_MainLogo_1to1.png">
+	<Grid x:Name="Grid_MainWindow" KeyDown="F_KeyBoardInput_RNil">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="131*"/>
-			<RowDefinition Height="269*"/>
-			<RowDefinition Height="241*"/>
+			<RowDefinition Height="362*"/>
+			<RowDefinition Height="148*"/>
 			<RowDefinition Height="63*"/>
 		</Grid.RowDefinitions>
 
@@ -19,7 +19,26 @@
 			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
 
-		<Button x:Name="Btn_NewGame" Content="Start new game" Height="50" Width="192" Click="F_StartNewGame_RNil" Cursor="Cross" FontSize="20"/>
+		<Menu Grid.ColumnSpan="2" Height="20" VerticalAlignment="Top">
+			<MenuItem Header="File" StaysOpenOnClick="True">
+				<MenuItem Header="New match" Click="F_StartNewGame_RNil" InputGestureText="Ctrl+N"/>
+				<MenuItem Header="Save match" Click="F_DownLoadGame_RNil" InputGestureText="Ctrl+S"/>
+				<MenuItem Header="Load match" Click="F_LoadGame_RNil" InputGestureText="Ctrl+O"/>
+				<MenuItem Header="Open recent match" x:Name="MenuI_Recent" Tag="-1"/>
+				<MenuItem Header="Quit" Click="F_Quit_RNil" InputGestureText="Alt+F4"/>
+			</MenuItem>
+
+			<MenuItem Header="Help" StaysOpenOnClick="True">
+				<MenuItem Header="Operating app" Click="F_ShowHint_RNil" InputGestureText="F1"/>
+				<MenuItem Header="Update log" InputGestureText="F12"/>
+			</MenuItem>
+		</Menu>
+
+		<Button x:Name="Btn_NewGame" Content="Start new match" Click="F_StartNewGame_RNil" Cursor="Cross" FontSize="20" HorizontalAlignment="Center" Height="50" Width="200"/>
+
+		<Button x:Name="Btn_LoadGame" Content="Load match" Click="F_LoadGame_RNil" Cursor="Cross" FontSize="20" HorizontalAlignment="Center" Height="50" Width="200" Grid.Column="1"/>
+
+		<Button x:Name="Btn_DownloadMatch" Content="Save match data" Click="F_DownLoadGame_RNil" Grid.Row="2" HorizontalAlignment="Center" FontSize="20" Cursor="Cross" Height="50" Width="200" />
 
 		<Grid Grid.Row="1">
 			<Grid.RowDefinitions>
@@ -40,13 +59,50 @@
 
 		</Grid>
 
-		<CheckBox x:Name="ChBox_CountMatches" Content="Count Maches" Grid.Row="2" Height="50" Width="245" IsChecked="True" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
-
-		<Label x:Name="TLabel_MatchCount" Grid.Column="1" Content="Match count: " HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
-		<Label x:Name="TLabel_Score" Grid.Column="1" Content="TEAM 1 | TEAM 2" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"/>
-		<Label x:Name="TLabel_Outcome" Grid.Column="1" Content="Output" Grid.Row="2" Height="100" Width="350" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
+		<Label x:Name="TLabel_Outcome" Grid.Column="1" Content="Outcome" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
 		<Label Content="© Matěj Zahradník [The Universality] zahra.matej@gmail.com - 2024" Grid.Row="3" Grid.ColumnSpan="2" FontSize="16" Cursor="Help" AutomationProperties.HelpText="Author of this program" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
 
+		<Grid Grid.Column="1" Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="10*"/>
+				<RowDefinition Height="90*"/>
+			</Grid.RowDefinitions>
+
+			<Label x:Name="TLabel_TeamName" Content="TEAM 1 | TEAM 2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"/>
+
+			<ScrollViewer x:Name="ScrollViewer_ScoreLog" Grid.Row="1">
+				<Grid x:Name="Grid_ScoreLog">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="5*"/>
+						<ColumnDefinition Width="30*"/>
+						<ColumnDefinition Width="30*"/>
+						<ColumnDefinition Width="30*"/>
+					</Grid.ColumnDefinitions>
+
+					<Grid.RowDefinitions>
+						<RowDefinition Height="10*"/>
+						<RowDefinition Height="90*"/>
+					</Grid.RowDefinitions>
+
+					<Label Grid.Column="0" Content="#" FontSize="16" HorizontalContentAlignment="Center"/>
+					<Label Grid.Column="1" Content="Game" FontSize="16" HorizontalContentAlignment="Center"/>
+					<Label Grid.Column="2" Content="Gem" FontSize="16" HorizontalContentAlignment="Center"/>
+					<Label Grid.Column="3" Content="Set" FontSize="16" HorizontalContentAlignment="Center"/>
+
+					<StackPanel x:Name="SPanel_Round" Grid.Row="1"  Grid.Column="0">
+					</StackPanel>
+
+					<StackPanel x:Name="SPanel_Game" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
+					</StackPanel>
+
+					<StackPanel x:Name="SPanel_Gem" Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Center">
+					</StackPanel>
+
+					<StackPanel x:Name="SPanel_Set" Grid.Row="1" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center">
+					</StackPanel>
+				</Grid>
+			</ScrollViewer>
+		</Grid>
 	</Grid>
 </Window>
