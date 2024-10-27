@@ -30,7 +30,7 @@
 
 			<MenuItem Header="Help" StaysOpenOnClick="True">
 				<MenuItem Header="Operating app" Click="F_ShowHint_RNil" InputGestureText="F1"/>
-				<MenuItem Header="Update log" InputGestureText="F12"/>
+				<MenuItem Header="Update log" Click="F_ShowUpdateNews_RNil" InputGestureText="F12"/>
 			</MenuItem>
 		</Menu>
 
