@@ -28,6 +28,11 @@
 				<MenuItem Header="Quit" Click="F_Quit_RNil" InputGestureText="Alt+F4"/>
 			</MenuItem>
 
+			<MenuItem Header="Edit" StaysOpenOnClick="True">
+				<MenuItem Header="Undo" Click="F_Undo_RNil" InputGestureText="Ctrl+Z"/>
+				<MenuItem Header="Redo" Click="F_Redo_RNil" InputGestureText="Ctrl+Y"/>
+			</MenuItem>
+
 			<MenuItem Header="Help" StaysOpenOnClick="True">
 				<MenuItem Header="Operating app" Click="F_ShowHint_RNil" InputGestureText="F1"/>
 				<MenuItem Header="Update log" Click="F_ShowUpdateNews_RNil" InputGestureText="F12"/>

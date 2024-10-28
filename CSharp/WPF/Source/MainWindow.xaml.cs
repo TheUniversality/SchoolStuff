@@ -7,7 +7,7 @@ Supervisor:				The Universality - zahra.matej@gmail.com
 Scripted by:			The Universality - zahra.matej@gmail.com
 --––––––––––––––––––––––––––––––––
 Created at:				09:00 [UTC+1] | 25.10.2024 [D.M.Y]
-Version:				0.02.00.U | 0.00.007.D
+Version:				0.02.01.U | 0.00.007.D
 Lastly edited:			22:16 [UTC+1] | 27.10.2024 [D.M.Y]
 --––––––––––––––––––––––––––––––––
 Related document:		Not evidenced
@@ -21,6 +21,7 @@ using System.Diagnostics;
 using Microsoft.Win32;
 using System.IO;
 using System.Windows.Input;
+using System;
 
 namespace Tennis
 {
@@ -42,6 +43,7 @@ namespace Tennis
 		int[] V_Int_PlrB		= {0, 0, 0}; // TeamB {0 = Game, 1 = Gem, 2 = Set}
 
 		List<int> V_IntList_ScoreLog		= new List<int>{};
+		List<int> V_IntList_UndoneScore		= new List<int>{};
 
 		int V_Int_MatchCount	= 0;	// Match counting
 
@@ -210,13 +212,18 @@ namespace Tennis
 			}
 		}
 
-		private void F_AddPlayerPoint_RNil(int[] PAR_Winner, int[] PAR_Opponent, int PAR_Team_Int, bool PAR_FileLoading_Bool)
+		private void F_AddPlayerPoint_RNil(int[] PAR_Winner, int[] PAR_Opponent, int PAR_Team_Int, bool PAR_FileLoading_Bool, bool PAR_UndoingAction_Bool)
 		{
 			if(V_Bool_Finished			== true)
 			{
 				MessageBox.Show("This math has ended! Click \"Start new game\" if you want to start new match.", "Match ended", MessageBoxButton.OK, MessageBoxImage.Warning);
 
 				return;
+			}
+
+			if(PAR_UndoingAction_Bool	== false)
+			{
+				V_IntList_UndoneScore.Clear();
 			}
 
 			V_Int_MatchCount++;
@@ -431,11 +438,11 @@ namespace Tennis
 			{
 				if (V_ClassMatchData.Score[I_Index] == 0)
 				{
-					F_AddPlayerPoint_RNil(V_Int_PlrA, V_Int_PlrB, V_ClassMatchData.Score[I_Index], true);
+					F_AddPlayerPoint_RNil(V_Int_PlrA, V_Int_PlrB, V_ClassMatchData.Score[I_Index], true, false);
 				}
 				else
 				{
-					F_AddPlayerPoint_RNil(V_Int_PlrB, V_Int_PlrA, V_ClassMatchData.Score[I_Index], true);
+					F_AddPlayerPoint_RNil(V_Int_PlrB, V_Int_PlrA, V_ClassMatchData.Score[I_Index], true, false);
 				}
 			}
 		}
@@ -529,12 +536,12 @@ namespace Tennis
 
 		private void F_TeamAScore_RNil(object C_Sender, RoutedEventArgs C_Event)
 		{
-			F_AddPlayerPoint_RNil(V_Int_PlrA, V_Int_PlrB, 0, false);
+			F_AddPlayerPoint_RNil(V_Int_PlrA, V_Int_PlrB, 0, false, false);
 		}
 
 		private void F_TeamBScore_RNil(object C_Sender, RoutedEventArgs C_Event)
 		{
-			F_AddPlayerPoint_RNil(V_Int_PlrB, V_Int_PlrA, 1, false);
+			F_AddPlayerPoint_RNil(V_Int_PlrB, V_Int_PlrA, 1, false, false);
 		}
 
 		private void F_ShowHint_RNil(object C_Sender, RoutedEventArgs C_Event)
@@ -550,6 +557,65 @@ namespace Tennis
 		private void F_Quit_RNil(object C_Sender, RoutedEventArgs C_Event)
 		{
 			Application.Current.Shutdown();
+		}
+
+		private void F_UndoProcessing_RNil(object C_Sender, RoutedEventArgs C_Event)
+		{
+			if(V_IntList_ScoreLog.Count < 1)
+			{
+				return;
+			}
+
+			V_IntList_UndoneScore.Add(V_IntList_ScoreLog.ElementAt(V_IntList_ScoreLog.Count-1));
+
+			V_IntList_ScoreLog.RemoveAt(V_IntList_ScoreLog.Count-1);
+
+			V_Bool_SkipWarning		= true;
+
+			int[] V_Array_ScoreLog	= V_IntList_ScoreLog.ToArray();
+
+			F_StartNewGame_RNil(C_Sender, C_Event);
+
+			V_Bool_FileOpened		= true;
+
+			for(int I_Index=0; I_Index < V_Array_ScoreLog.Length; I_Index++)
+			{
+				if (V_Array_ScoreLog[I_Index] == 0)
+				{
+					F_AddPlayerPoint_RNil(V_Int_PlrA, V_Int_PlrB, V_Array_ScoreLog[I_Index], true, true);
+				}
+				else
+				{
+					F_AddPlayerPoint_RNil(V_Int_PlrB, V_Int_PlrA, V_Array_ScoreLog[I_Index], true, true);
+				}
+			}
+
+			V_Bool_SkipWarning		= false;
+			V_Bool_FileOpened		= false;
+		}
+
+		private void F_Undo_RNil(object C_Sender, RoutedEventArgs C_Event)
+		{
+			F_UndoProcessing_RNil(C_Sender, C_Event);
+		}
+
+		private void F_Redo_RNil(object C_Sender, RoutedEventArgs C_Event)
+		{
+			if(V_IntList_UndoneScore.Count < 1)
+			{
+				return;
+			}
+
+			if(V_IntList_UndoneScore.ToArray()[V_IntList_UndoneScore.Count-1]	== 0)
+			{
+				F_AddPlayerPoint_RNil(V_Int_PlrA, V_Int_PlrB, 0, false, true);
+			}
+			else
+			{
+				F_AddPlayerPoint_RNil(V_Int_PlrB, V_Int_PlrA, 1, false, true);
+			}
+
+			V_IntList_UndoneScore.RemoveAt(V_IntList_UndoneScore.Count-1);
 		}
 
 		private void F_KeyBoardInput_RNil(object C_Sender, KeyEventArgs C_Event)
@@ -572,6 +638,31 @@ namespace Tennis
 
 						F_LoadGame_RNil(C_Sender, C_Event);
 						break;
+
+					case Key.Z:
+
+						F_UndoProcessing_RNil(C_Sender, C_Event);
+						break;
+
+					case Key.Y:
+
+						if(V_IntList_UndoneScore.Count < 1)
+						{
+							return;
+						}
+
+						if(V_IntList_UndoneScore.ToArray()[V_IntList_UndoneScore.Count-1]	== 0)
+						{
+							F_AddPlayerPoint_RNil(V_Int_PlrA, V_Int_PlrB, 0, false, true);
+						}
+						else
+						{
+							F_AddPlayerPoint_RNil(V_Int_PlrB, V_Int_PlrA, 1, false, true);
+						}
+
+						V_IntList_UndoneScore.RemoveAt(V_IntList_UndoneScore.Count-1);
+
+						break;
 				}
 			}
 
@@ -586,12 +677,12 @@ namespace Tennis
 				{
 					case Key.A:
 
-						F_AddPlayerPoint_RNil(V_Int_PlrA, V_Int_PlrB, 0, false);
+						F_AddPlayerPoint_RNil(V_Int_PlrA, V_Int_PlrB, 0, false, false);
 						break;
 
 					case Key.D:
 
-						F_AddPlayerPoint_RNil(V_Int_PlrB, V_Int_PlrA, 1, false);
+						F_AddPlayerPoint_RNil(V_Int_PlrB, V_Int_PlrA, 1, false, false);
 						break;
 
 					case Key.F1:
