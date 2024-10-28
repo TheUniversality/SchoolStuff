@@ -7,8 +7,8 @@ Supervisor:				The Universality - zahra.matej@gmail.com
 Scripted by:			The Universality - zahra.matej@gmail.com
 --––––––––––––––––––––––––––––––––
 Created at:				09:00 [UTC+1] | 25.10.2024 [D.M.Y]
-Version:				0.02.01.U | 0.00.007.D
-Lastly edited:			22:16 [UTC+1] | 27.10.2024 [D.M.Y]
+Version:				0.02.01.U | 0.00.009.D
+Lastly edited:			23:33 [UTC+1] | 28.10.2024 [D.M.Y]
 --––––––––––––––––––––––––––––––––
 Related document:		Not evidenced
 Script purpose:			Tennis Calculator
@@ -361,7 +361,7 @@ namespace Tennis
 			if(V_Bool_FileOpened	== false && V_Bool_SkipWarning	== false)
 			{
 				// MBQ - Message Box Result
-				MessageBoxResult V_MBQ_Result	= MessageBox.Show("Do you want to save the match data or discard them?", "Match download", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+				MessageBoxResult V_MBQ_Result	= MessageBox.Show("Do you want to save the match data?", "Match download", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
 
 				switch(V_MBQ_Result)
 				{
@@ -666,7 +666,7 @@ namespace Tennis
 				}
 			}
 
-			if(C_Event.Key == Key.Escape)
+			if(C_Event.Key	== Key.Escape || C_Event.Key	== Key.Enter)
 			{
 				Btn_NewGame.Focus();
 			}
@@ -676,11 +676,13 @@ namespace Tennis
 				switch(C_Event.Key)
 				{
 					case Key.A:
+					case Key.D1:
 
 						F_AddPlayerPoint_RNil(V_Int_PlrA, V_Int_PlrB, 0, false, false);
 						break;
 
 					case Key.D:
+					case Key.D2:
 
 						F_AddPlayerPoint_RNil(V_Int_PlrB, V_Int_PlrA, 1, false, false);
 						break;
