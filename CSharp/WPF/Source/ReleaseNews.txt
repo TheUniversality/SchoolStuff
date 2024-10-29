@@ -1,11 +1,18 @@
 ________________
+Version: 2.1.10.21
+
+Changes:
+1. Minor changes to the UI
+(Fixed issue where if rounds were over 100 it showed first two digids)
+
+________________
 Version: 2.1.9.13
 
 Changes:
 1. Minor changes to keybinds & new binds
 - Pressing 1 or 2 has the same effect as pressing A or D
 - Pressing Enter has the same effect as pressing Esc
-2. Minor changes the UI
+2. Minor changes to the UI
 
 ________________
 Version: 2.1.8.8

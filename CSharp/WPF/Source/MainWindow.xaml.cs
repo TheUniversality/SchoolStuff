@@ -7,8 +7,8 @@ Supervisor:				The Universality - zahra.matej@gmail.com
 Scripted by:			The Universality - zahra.matej@gmail.com
 --––––––––––––––––––––––––––––––––
 Created at:				09:00 [UTC+1] | 25.10.2024 [D.M.Y]
-Version:				0.02.01.U | 0.00.009.D
-Lastly edited:			23:33 [UTC+1] | 28.10.2024 [D.M.Y]
+Version:				0.02.01.U | 0.00.010.D
+Lastly edited:			23:58 [UTC+1] | 28.10.2024 [D.M.Y]
 --––––––––––––––––––––––––––––––––
 Related document:		Not evidenced
 Script purpose:			Tennis Calculator

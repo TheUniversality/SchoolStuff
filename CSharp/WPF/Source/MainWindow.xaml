@@ -79,7 +79,7 @@
 			<ScrollViewer x:Name="ScrollViewer_ScoreLog" Grid.Row="1">
 				<Grid x:Name="Grid_ScoreLog">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="5*"/>
+						<ColumnDefinition Width="7.5*"/>
 						<ColumnDefinition Width="30*"/>
 						<ColumnDefinition Width="30*"/>
 						<ColumnDefinition Width="30*"/>
