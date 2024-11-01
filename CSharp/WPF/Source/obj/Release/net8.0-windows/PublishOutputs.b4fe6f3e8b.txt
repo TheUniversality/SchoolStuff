@@ -1,6 +1,0 @@
-C:\CollectorD\Testing\C#\WindowsPresentationFoundation\Tennis\Tennis\Tennis\bin\Release\net8.0-windows\publish\ReleaseNews.txt
-C:\CollectorD\Testing\C#\WindowsPresentationFoundation\Tennis\Tennis\Tennis\bin\Release\net8.0-windows\publish\Tennis.exe
-C:\CollectorD\Testing\C#\WindowsPresentationFoundation\Tennis\Tennis\Tennis\bin\Release\net8.0-windows\publish\Tennis.dll
-C:\CollectorD\Testing\C#\WindowsPresentationFoundation\Tennis\Tennis\Tennis\bin\Release\net8.0-windows\publish\Tennis.deps.json
-C:\CollectorD\Testing\C#\WindowsPresentationFoundation\Tennis\Tennis\Tennis\bin\Release\net8.0-windows\publish\Tennis.runtimeconfig.json
-C:\CollectorD\Testing\C#\WindowsPresentationFoundation\Tennis\Tennis\Tennis\bin\Release\net8.0-windows\publish\Tennis.pdb
