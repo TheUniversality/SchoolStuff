@@ -25,7 +25,7 @@
 				<MenuItem Header="Save match" Click="F_DownLoadGame_RNil" InputGestureText="Ctrl+S"/>
 				<MenuItem Header="Load match" Click="F_LoadGame_RNil" InputGestureText="Ctrl+O"/>
 				<MenuItem Header="Open recent match" x:Name="MenuI_Recent" InputGestureText="Ctrl+R"/>
-				<MenuItem Header="Clear recent marches"/>
+				<MenuItem Header="Clear recent marches" Click="F_ClearRecentMatches_RNil"/>
 				<MenuItem Header="Quit" Click="F_Quit_RNil" InputGestureText="Alt+F4"/>
 			</MenuItem>
 

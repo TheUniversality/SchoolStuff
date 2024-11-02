@@ -1,4 +1,16 @@
 ________________
+Version: 3.1.16.26
+
+Fixes:
+1. Time being process from previous match into current match
+
+________________
+Version: 3.1.14.24
+
+Added features:
+1. Option to clear Recent matches
+
+________________
 Version: 3.0.13.23
 
 Added features:
@@ -9,7 +21,6 @@ Added features:
 
 Changes:
 1. UI: Moved some buttons
-2. Compatible with files saved with previous versions
 
 ________________
 Version: 2.1.10.21
@@ -17,16 +28,12 @@ Version: 2.1.10.21
 Changes:
 1. Minor changes to the UI
 (Fixed issue where if rounds were over 100 it showed first two digids)
-
 ________________
 Version: 2.1.9.13
 
 Changes:
 1. Minor changes to keybinds & new binds
-- Pressing 1 or 2 has the same effect as pressing A or D
-- Pressing Enter has the same effect as pressing Esc
 2. Minor changes to the UI
-
 ________________
 Version: 2.1.8.8
 
@@ -35,17 +42,15 @@ Version: 2.1.8.8
 
 Changes:
 1. UI: TopBar Menu "edit" section added
-
 ________________
 Version: 2.0.7.6
 
 Added features:
-1. Match rounds - You can see the history of changes
+1. Match round history
 2. Match saving & loading
 
 Changes:
 1. UI: TopBar Menu added
-2. UI: Replaced some buttons
 
 Removed:
 1. Option to turn match counting on/off 

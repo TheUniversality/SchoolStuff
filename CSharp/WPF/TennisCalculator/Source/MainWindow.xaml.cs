@@ -7,8 +7,8 @@ Supervisor:				The Universality - zahra.matej@gmail.com
 Scripted by:			The Universality - zahra.matej@gmail.com
 --––––––––––––––––––––––––––––––––
 Created at:				09:00 [UTC+1] | 25.10.2024 [D.M.Y]
-Version:				0.03.00.U | 0.00.013.D
-Lastly edited:			09:53 [UTC+1] | 01.11.2024 [D.M.Y]
+Version:				0.03.01.U | 0.00.016.D
+Lastly edited:			16:33 [UTC+1] | 02.11.2024 [D.M.Y]
 --––––––––––––––––––––––––––––––––
 Related document:		Not evidenced
 Script purpose:			Tennis Calculator
@@ -56,7 +56,7 @@ namespace Tennis
 
 		int V_Int_SetsToWin		= 2;
 
-		int[] V_Int_Time	= {0, 0, 0}; // Time holder (in seconds) {0 = Time since match start, 1 = Time since gem start, 2 = Time of the last gem}
+		int[] V_Int_Time		= {-1, -1, 0}; // Time holder (in seconds) {0 = Time since match start, 1 = Time since gem start, 2 = Time of the last gem}
 
 		List<int> V_IntList_ScoreLog		= new List<int>{};
 		List<int> V_IntList_UndoneScore		= new List<int>{};
@@ -160,8 +160,6 @@ namespace Tennis
 		{
 			while(V_Bool_Finished	== false && V_Bool_FileOpened	== false)
 			{
-				Thread.Sleep(1000);
-
 				V_Int_Time[0]++;
 				V_Int_Time[1]++;
 
@@ -176,6 +174,8 @@ namespace Tennis
 
 					V_Bool_NewGemCount	= false;
 				}
+
+				Thread.Sleep(1000);
 			}
 		}
 
@@ -477,7 +477,7 @@ namespace Tennis
 
 		// MARK: Event functions
 
-		private void F_StartNewGame_RNil(object C_Sender, RoutedEventArgs C_Event)
+		private void F_StartNewGame_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
 			if(V_Bool_FileOpened	== false && V_Bool_SkipWarning	== false)
 			{
@@ -493,11 +493,27 @@ namespace Tennis
 				}
 			}
 
-			V_IntList_ScoreLog.Clear();
-
-			if(Btn_NewGame == C_Event.Source as Button)
+			if(V_Bool_Finished		== true)
 			{
+				V_Bool_Finished		= false;
+			}
+
+			V_Int_Time				= new int[] {-1, -1, 0};
+
+			if(Btn_NewGame == PAR_Event.Source as Button)
+			{
+				V_Bool_Finished		= true;
 				V_Bool_FileOpened	= false;
+
+				F_TranslateToSMH_RNil(V_Int_Time[0], V_TLabel_TimeSinceMatch, "Time passed since match started:");
+				V_TLabel_GemDuration.Content	= "Gem duration: ";
+				
+				Thread.Sleep(1000);
+
+				V_Bool_Finished		= false;
+
+				Thread V_Thread_New	= new Thread(F_TimeCount_RNil);
+				V_Thread_New.Start();
 			}
 
 			V_Bool_SkipWarning		= false;
@@ -507,13 +523,7 @@ namespace Tennis
 			V_SPanel_Gem.Children.Clear();
 			V_SPanel_Set.Children.Clear();
 
-			if(V_Bool_Finished		== true)
-			{
-				Thread V_Thread_New	= new Thread(F_TimeCount_RNil);
-				V_Thread_New.Start();
-
-				V_Bool_Finished		= false;
-			}
+			V_IntList_ScoreLog.Clear();
 
 			V_Int_MatchCount		= 0;
 
@@ -559,17 +569,18 @@ namespace Tennis
 			Btn_TeamBScore.Content		= TBox_TeamB.Text+" Score";
 
 			V_TLabel_TeamName.Content	= TBox_TeamA.Text+" | "+TBox_TeamB.Text;
-
-			V_Int_Time	= new int[] {0, 0, 0};
 		}
 
-		private void F_ProcessMatchData_RNil(object C_Sender, RoutedEventArgs C_Event, string PAR_FilePath)
+		private void F_ProcessMatchData_RNil(object PAR_Sender, RoutedEventArgs PAR_Event, string PAR_FilePath)
 		{
 			string V_String_MatchData= File.ReadAllText(PAR_FilePath);
 
 			SysC_JSONDataHandler V_Class_MatchData	= JsonSerializer.Deserialize<SysC_JSONDataHandler>(V_String_MatchData);
 
 			F_AddRecentMatch_RNil(PAR_FilePath);
+
+			V_Bool_SkipWarning		= true;
+			V_Bool_FileOpened		= true;
 
 			if(V_Class_MatchData.A	== null)
 			{
@@ -594,7 +605,7 @@ namespace Tennis
 			
 			V_TLabel_TimeSinceMatch.Content	= "Match duration time isn't saved with this file";
 			V_TLabel_GemDuration.Content	= "Gem duration time isn't saved in files";
-			
+
 			if(V_Class_MatchData.Time		!= 0)
 			{
 				int V_IntSeconds	= V_Class_MatchData.Time%60;
@@ -602,19 +613,15 @@ namespace Tennis
 
 				V_TLabel_TimeSinceMatch.Content	= "This match lasted for: "+V_IntMinutes+" minute(s) "+V_IntSeconds+" second(s)";
 			}
-			if(V_Class_MatchData.LastGem		!= 0)
+			if(V_Class_MatchData.LastGem	!= 0)
 			{
 				int V_IntSeconds	= V_Class_MatchData.LastGem%60;
 				int V_IntMinutes	= (V_Class_MatchData.LastGem-V_Class_MatchData.LastGem%60)/60;
 
-				V_TLabel_GemDuration.Content	= "Last gem took: "+V_IntMinutes+" minute(s) "+V_IntSeconds+" second(s)";
+				V_TLabel_GemDuration.Content= "Last gem took: "+V_IntMinutes+" minute(s) "+V_IntSeconds+" second(s)";
 			}
 
-			V_Bool_SkipWarning		= true;
-
-			F_StartNewGame_RNil(C_Sender, C_Event);
-
-			V_Bool_FileOpened		= true;
+			F_StartNewGame_RNil(PAR_Sender, PAR_Event);
 
 			for(int I_Index=0; I_Index < V_Class_MatchData.Score.Length; I_Index++)
 			{
@@ -629,7 +636,7 @@ namespace Tennis
 			}
 		}
 
-		private void F_LoadGame_RNil(object C_Sender, RoutedEventArgs C_Event)
+		private void F_LoadGame_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
 			if(V_Bool_FileOpened	== false && V_Bool_SkipWarning	== false)
 			{
@@ -659,7 +666,7 @@ namespace Tennis
 			{
 				try
 				{
-					F_ProcessMatchData_RNil(C_Sender, C_Event, V_OFD_MatchData.FileName);
+					F_ProcessMatchData_RNil(PAR_Sender, PAR_Event, V_OFD_MatchData.FileName);
 				}
 				catch (Exception ex)
 				{
@@ -672,7 +679,7 @@ namespace Tennis
 			}
 		}
 
-		private void F_LoadDirectGame_RNil(object C_Sender, RoutedEventArgs C_Event)
+		private void F_LoadDirectGame_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
 			if(V_Bool_FileOpened	== false && V_Bool_SkipWarning	== false)
 			{
@@ -692,13 +699,13 @@ namespace Tennis
 				}
 			}
 
-			MenuItem V_MenuI_UsedControl	= C_Event.Source as MenuItem;
+			MenuItem V_MenuI_UsedControl	= PAR_Event.Source as MenuItem;
 
 			if(File.Exists(V_MenuI_UsedControl.Header.ToString()))
 			{
 				try
 				{
-					F_ProcessMatchData_RNil(C_Sender, C_Event, V_MenuI_UsedControl.Header.ToString());
+					F_ProcessMatchData_RNil(PAR_Sender, PAR_Event, V_MenuI_UsedControl.Header.ToString());
 				}
 				catch (Exception ex)
 				{
@@ -711,37 +718,61 @@ namespace Tennis
 			}
 		}
 
-		private void F_DownLoadGame_RNil(object C_Sender, RoutedEventArgs C_Event)
+		private void F_DownLoadGame_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
 			F_SaveMatchLog_RNil();
 		}
 
-		private void F_TeamAScore_RNil(object C_Sender, RoutedEventArgs C_Event)
+		private void F_TeamAScore_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
 			F_AddPlayerPoint_RNil(V_Int_PlrA, V_Int_PlrB, 0, false, false);
 		}
 
-		private void F_TeamBScore_RNil(object C_Sender, RoutedEventArgs C_Event)
+		private void F_TeamBScore_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
 			F_AddPlayerPoint_RNil(V_Int_PlrB, V_Int_PlrA, 1, false, false);
 		}
 
-		private void F_ShowHint_RNil(object C_Sender, RoutedEventArgs C_Event)
+		private void F_ShowHint_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
 			F_ShowMBHint_RNil();
 		}
 
-		private void F_ShowUpdateNews_RNil(object C_Sender, RoutedEventArgs C_Event)
+		private void F_ShowUpdateNews_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
 			F_ShowMBUpdateNews_RNil();
 		}
 
-		private void F_Quit_RNil(object C_Sender, RoutedEventArgs C_Event)
+		private void F_ClearRecentMatches_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
+			V_StringList_Recent.Clear();
+			MenuI_Recent.Items.Clear();
+
+			if(File.Exists($"{Environment.CurrentDirectory}\\RecentFiles.json")	== false)
+			{
+				File.Create($"{Environment.CurrentDirectory}\\RecentFiles.json");
+			}
+			
+			var V_JSON_RecentFiles	= new
+			{
+				Paths	= "[]"
+			};
+
+			string V_String_SerializedJSON	= JsonSerializer.Serialize(V_JSON_RecentFiles);
+
+			using(StreamWriter V_StreamWriter		= new StreamWriter($"{Environment.CurrentDirectory}\\RecentFiles.json"))
+			{
+				V_StreamWriter.Write(V_String_SerializedJSON);
+			}
+		}
+
+		private void F_Quit_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
+		{
+			V_Bool_Finished	= true;
 			Application.Current.Shutdown();
 		}
 
-		private void F_UndoProcessing_RNil(object C_Sender, RoutedEventArgs C_Event)
+		private void F_UndoProcessing_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
 			if(V_IntList_ScoreLog.Count < 1)
 			{
@@ -756,7 +787,7 @@ namespace Tennis
 
 			int[] V_Array_ScoreLog	= V_IntList_ScoreLog.ToArray();
 
-			F_StartNewGame_RNil(C_Sender, C_Event);
+			F_StartNewGame_RNil(PAR_Sender, PAR_Event);
 
 			V_Bool_FileOpened		= true;
 
@@ -776,12 +807,12 @@ namespace Tennis
 			V_Bool_FileOpened		= false;
 		}
 
-		private void F_Undo_RNil(object C_Sender, RoutedEventArgs C_Event)
+		private void F_Undo_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
-			F_UndoProcessing_RNil(C_Sender, C_Event);
+			F_UndoProcessing_RNil(PAR_Sender, PAR_Event);
 		}
 
-		private void F_Redo_RNil(object C_Sender, RoutedEventArgs C_Event)
+		private void F_Redo_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
 			if(V_IntList_UndoneScore.Count < 1)
 			{
@@ -800,15 +831,15 @@ namespace Tennis
 			V_IntList_UndoneScore.RemoveAt(V_IntList_UndoneScore.Count-1);
 		}
 
-		private void F_KeyBoardInput_RNil(object C_Sender, KeyEventArgs C_Event)
+		private void F_KeyBoardInput_RNil(object PAR_Sender, KeyEventArgs PAR_Event)
 		{
 			if(Keyboard.Modifiers	== ModifierKeys.Control)
 			{
-				switch(C_Event.Key)
+				switch(PAR_Event.Key)
 				{
 					case Key.N:
 
-						F_StartNewGame_RNil(C_Sender, C_Event);
+						F_StartNewGame_RNil(PAR_Sender, PAR_Event);
 						break;
 
 					case Key.S:
@@ -818,14 +849,14 @@ namespace Tennis
 
 					case Key.O:
 
-						F_LoadGame_RNil(C_Sender, C_Event);
+						F_LoadGame_RNil(PAR_Sender, PAR_Event);
 						break;
 
 					case Key.R:
 
 						if(V_StringList_Recent.Count	> 0)
 						{
-							F_ProcessMatchData_RNil(C_Sender, C_Event, V_StringList_Recent.Last());
+							F_ProcessMatchData_RNil(PAR_Sender, PAR_Event, V_StringList_Recent.Last());
 
 							return;
 						}
@@ -836,7 +867,7 @@ namespace Tennis
 
 					case Key.Z:
 
-						F_UndoProcessing_RNil(C_Sender, C_Event);
+						F_UndoProcessing_RNil(PAR_Sender, PAR_Event);
 						break;
 
 					case Key.Y:
@@ -861,14 +892,14 @@ namespace Tennis
 				}
 			}
 
-			if(C_Event.Key	== Key.Escape || C_Event.Key	== Key.Enter)
+			if(PAR_Event.Key	== Key.Escape || PAR_Event.Key	== Key.Enter)
 			{
 				Btn_NewGame.Focus();
 			}
 
 			if(V_TBox_TeamAName.IsKeyboardFocused	== false && V_TBox_TeamBName.IsKeyboardFocused	== false)
 			{
-				switch(C_Event.Key)
+				switch(PAR_Event.Key)
 				{
 					case Key.A:
 					case Key.D1:
