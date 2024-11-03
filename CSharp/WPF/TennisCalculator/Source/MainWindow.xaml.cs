@@ -7,8 +7,8 @@ Supervisor:				The Universality - zahra.matej@gmail.com
 Scripted by:			The Universality - zahra.matej@gmail.com
 --––––––––––––––––––––––––––––––––
 Created at:				09:00 [UTC+1] | 25.10.2024 [D.M.Y]
-Version:				0.03.01.U | 0.00.016.D
-Lastly edited:			16:33 [UTC+1] | 02.11.2024 [D.M.Y]
+Version:				0.03.01.U | 0.00.017.D
+Lastly edited:			11:13 [UTC+1] | 03.11.2024 [D.M.Y]
 --––––––––––––––––––––––––––––––––
 Related document:		Not evidenced
 Script purpose:			Tennis Calculator
@@ -60,8 +60,6 @@ namespace Tennis
 
 		List<int> V_IntList_ScoreLog		= new List<int>{};
 		List<int> V_IntList_UndoneScore		= new List<int>{};
-
-		int V_Int_MatchCount	= 0;	// Match counting
 
 		List<string> V_StringList_Recent	= new List<string>{};
 
@@ -182,7 +180,7 @@ namespace Tennis
 		private void F_CompleteVictory_RNil(String PAR_TeamName)
 		{
 
-			V_TLabel_Outcome.Content		= PAR_TeamName+" has won the match within "+V_Int_MatchCount+" rounds.";
+			V_TLabel_Outcome.Content		= PAR_TeamName+" has won the match within "+V_IntList_ScoreLog.Count()+" rounds.";
 		}
 
 		private void F_ShowStates_RNil(int[] PAR_PA, int[] PAR_PB)
@@ -233,7 +231,7 @@ namespace Tennis
 			V_TLabel_CurrentScore.Content	= "|\t"+V_Game[0]+":"+V_Game[1]+"\t|\t"+V_Int_PlrA[1]+":"+V_Int_PlrB[1]+"\t|\t"+V_Int_PlrA[2]+":"+V_Int_PlrB[2]+"\t|";
 
 			Label V_TLabel_Round	= new Label();
-			V_TLabel_Round.Content	= "# "+V_Int_MatchCount;
+			V_TLabel_Round.Content	= "# "+V_IntList_ScoreLog.Count();
 			Grid.SetColumn(V_TLabel_Round, 0);
 
 
@@ -320,8 +318,6 @@ namespace Tennis
 			{
 				V_IntList_UndoneScore.Clear();
 			}
-
-			V_Int_MatchCount++;
 
 			V_IntList_ScoreLog.Add(PAR_Team_Int);
 
@@ -524,8 +520,6 @@ namespace Tennis
 			V_SPanel_Set.Children.Clear();
 
 			V_IntList_ScoreLog.Clear();
-
-			V_Int_MatchCount		= 0;
 
 			V_Int_PlrA				= new int[] {0, 0, 0};
 			V_Int_PlrB				= new int[] {0, 0, 0};
@@ -774,24 +768,29 @@ namespace Tennis
 
 		private void F_UndoProcessing_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)
 		{
-			if(V_IntList_ScoreLog.Count < 1)
+			if(V_IntList_ScoreLog.Count	< 1)
 			{
 				return;
 			}
 
 			V_IntList_UndoneScore.Add(V_IntList_ScoreLog.ElementAt(V_IntList_ScoreLog.Count-1));
 
-			V_IntList_ScoreLog.RemoveAt(V_IntList_ScoreLog.Count-1);
-
-			V_Bool_SkipWarning		= true;
-
 			int[] V_Array_ScoreLog	= V_IntList_ScoreLog.ToArray();
 
-			F_StartNewGame_RNil(PAR_Sender, PAR_Event);
+			V_IntList_ScoreLog.Clear();
 
-			V_Bool_FileOpened		= true;
+			V_Int_PlrA				= new int[] {0, 0, 0};
+			V_Int_PlrB				= new int[] {0, 0, 0};
+			
+			V_Bool_Finished			= false;
 
-			for(int I_Index=0; I_Index < V_Array_ScoreLog.Length; I_Index++)
+			SPanel_Round.Children.Clear();
+			SPanel_Game.Children.Clear();
+			SPanel_Gem.Children.Clear();
+			SPanel_Set.Children.Clear();
+
+			// V_Array_ScoreLog.Length-1 - To not consider the last (undone) step
+			for(int I_Index=0; I_Index < V_Array_ScoreLog.Length-1; I_Index++)
 			{
 				if (V_Array_ScoreLog[I_Index] == 0)
 				{
@@ -802,9 +801,6 @@ namespace Tennis
 					F_AddPlayerPoint_RNil(V_Int_PlrB, V_Int_PlrA, V_Array_ScoreLog[I_Index], true, true);
 				}
 			}
-
-			V_Bool_SkipWarning		= false;
-			V_Bool_FileOpened		= false;
 		}
 
 		private void F_Undo_RNil(object PAR_Sender, RoutedEventArgs PAR_Event)

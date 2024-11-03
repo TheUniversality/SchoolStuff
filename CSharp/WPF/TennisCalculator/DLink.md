@@ -3,7 +3,7 @@
 ***Versions***
 
 ## Latest
-[3.1.16.26](https://matejzahradnik.com/Software/TennisCalculator_3.1.16.26.7z)
+[3.1.17.27](https://matejzahradnik.com/Software/TennisCalculator_3.1.17.27.7z)
 
 ## Older
 [3.0.13.23](https://matejzahradnik.com/Software/TennisCalculator_3.0.13.23.7z)
