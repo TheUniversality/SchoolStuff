@@ -1,5 +1,10 @@
 # Tennis Calculator
 
+**Requirements**
+Windows 7+
+
+(You'll need to install this. Since it has only a test certificate *(so it has basically no certificate)* your Windows will warn you that it's unsafe.)
+
 ***Versions***
 
 ## Latest
