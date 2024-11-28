@@ -8,6 +8,8 @@ Computer
 ***Versions***
 
 ## Latest
-[1.0.7.3](https://matejzahradnik.com/Software/API_Thingy_1_0_7_3.7z)
+[1.0.7.3 - Windows](https://matejzahradnik.com/Software/API_Thingy_1_0_7_3.7z)
+[1.0.7.3 - Linux](https://matejzahradnik.com/Software/API_Thingy_1.0.7.3_Linux.7z)
+
 
 ## Older
