@@ -5,3 +5,6 @@ This is just a repository of *random* scripts & projects I did in school or at h
 
 ## C# : WPF
 [TennisCalculator](https://github.com/TheUniversality/SchoolStuff/blob/main/CSharp/WPF/TennisCalculator/DLink.md)
+
+## C# : Avalonia UI
+[API Thingy](https://github.com/TheUniversality/SchoolStuff/blob/main/CSharp/AvaloniaUI/API_Thingy/DLink.md)
