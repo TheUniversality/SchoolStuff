@@ -1,0 +1,62 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:NSpace_API="clr-namespace:TestLearn_AnimeGirls_API"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="TestLearn_AnimeGirls_API.MainWindow"
+		x:DataType="NSpace_API:SysC_ActiveSet"
+        Title="TestLearn_AnimeGirls_API">
+	<Grid KeyUp="F_KeyUp_RNil" ColumnDefinitions="*, 5, *" RowDefinitions="5*, 85*, 10*">
+		<Menu>
+			<MenuItem Header="File">
+				<MenuItem Click="F_RequestImage_RNil" Header="Request image" InputGesture="Ctrl+N"/>
+				<MenuItem Click="F_SaveFileRequest_RNil" Header="Download image" InputGesture="Ctrl+S"/>
+				<MenuItem Click="F_QuitApp_RNil" Header="Quit application" InputGesture="Ctrl+Q"/>
+			</MenuItem>
+
+			<MenuItem Header="Images">
+				<MenuItem Click="F_RequestPreviousImage_RNil" Header="Previous image" InputGesture="Ctrl+Z"/>
+				<MenuItem Click="F_RequestLastImage_RNil" Header="Latest image" InputGesture="Ctrl+Y"/>
+			</MenuItem>
+		</Menu>
+
+		<StackPanel Grid.Row="1">
+			<ComboBox x:Name="CBox_nSFW" HorizontalAlignment="Stretch" SelectedIndex="{Binding V_G_NSFWOptionsHidden, Mode=TwoWay}">
+				<ComboBoxItem Content="SFW (Safe For Work)"/>
+				<ComboBoxItem Content="NSFW (Not Safe For Work)"/>
+			</ComboBox>
+
+
+			<ComboBox x:Name="CBox_Category" HorizontalAlignment="Stretch" SelectedIndex="{Binding V_G_NSFWOptionsHidden, Mode=OneWay}">
+				<ComboBoxItem Content="Waifu"/>
+				<ComboBoxItem Content="Neko"/>
+
+				<ComboBoxItem Content="Shinobu" IsEnabled="{Binding Path=V_G_SFWOptionsHidden, Mode=OneWay}"/>
+				<ComboBoxItem Content="Bully" IsEnabled="{Binding Path=V_G_SFWOptionsHidden, Mode=OneWay}"/>
+				<ComboBoxItem Content="Cuddle" IsEnabled="{Binding Path=V_G_SFWOptionsHidden, Mode=OneWay}"/>
+				<ComboBoxItem Content="Cry" IsEnabled="{Binding Path=V_G_SFWOptionsHidden, Mode=OneWay}"/>
+				<ComboBoxItem Content="Hug" IsEnabled="{Binding Path=V_G_SFWOptionsHidden, Mode=OneWay}"/>
+				<ComboBoxItem Content="Kiss" IsEnabled="{Binding Path=V_G_SFWOptionsHidden, Mode=OneWay}"/>
+				<ComboBoxItem Content="Smug" IsEnabled="{Binding Path=V_G_SFWOptionsHidden, Mode=OneWay}"/>
+				<ComboBoxItem Content="Smile" IsEnabled="{Binding Path=V_G_SFWOptionsHidden, Mode=OneWay}"/>
+				<ComboBoxItem Content="Wave" IsEnabled="{Binding Path=V_G_SFWOptionsHidden, Mode=OneWay}"/>
+				<ComboBoxItem Content="Highfive" IsEnabled="{Binding Path=V_G_SFWOptionsHidden, Mode=OneWay}"/>
+
+				<ComboBoxItem Content="Trap" IsEnabled="{Binding Path=V_G_NSFWOptionsHidden, Mode=OneWay}"/>
+				<ComboBoxItem Content="Blowjob" IsEnabled="{Binding Path=V_G_NSFWOptionsHidden, Mode=OneWay}"/>
+			</ComboBox>
+
+			<Button Click="F_RequestImage_RNil" Content="Image request" HorizontalAlignment="Center" Margin="0, 100, 0, 0"/>
+
+			<Button Click="F_SaveFileRequest_RNil" Content="Download image" HorizontalAlignment="Center"/>
+
+		</StackPanel>
+
+		<Image x:Name="Image_APIShow" Grid.Column="2" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Cursor="Hand"/>
+
+		<GridSplitter Grid.Column="1" Grid.Row="2" ResizeDirection="Columns"/>
+
+		<Button Click="F_ShowMyGitHub_RNil" Cursor="Help" Grid.Row="2" Grid.ColumnSpan="3" Content="© Matěj Zahradník [The Universality] - zahra.matej@gmail.com" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Transparent"/>
+	</Grid>
+</Window>
